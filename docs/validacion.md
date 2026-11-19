@@ -13,3 +13,7 @@ La prueba usó el ZIP oficial limpio de SuiteCRM 8.10.2, una base vacía en Mari
 | Java | Un contenedor Java independiente arrancó en la misma red con la URL interna `http://app:80`. Su endpoint `/actuator/health` devolvió `UP`. |
 
 Quedaron pendientes la instalación del ZIP desde la pantalla del Cargador, la comprobación visual del Constructor, la verificación individual de todas las casillas de la matriz ACL y el flujo de login delegado completo desde el navegador a Java. Se usaron cuentas y datos de prueba únicamente en el proyecto temporal.
+
+## Restauración de la base
+
+Se comprobó el SHA-256 y la integridad gzip del respaldo privado. La importación se repitió con el servicio MariaDB de este Compose, un proyecto separado y su propio volumen. Se recuperaron 255 tablas y se comprobaron los módulos con registros y los tres roles de AgroSync. La prueba de restauración abarcó la base. Los archivos y las rutas V8 se comprobaron en la instalación limpia descrita arriba.
