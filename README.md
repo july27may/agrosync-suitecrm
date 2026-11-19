@@ -14,6 +14,8 @@ Este repositorio contiene el ZIP de instalación de los 11 módulos AgroSync, el
 | [docs/restauracion.md](docs/restauracion.md) | Restaurar una copia privada de la base en una instancia separada. |
 | [docs/validacion.md](docs/validacion.md) | Resultados de la instalación aislada. |
 
+Para configurar SuiteCRM, Java y React en conjunto, sigue la [guía de AgroSync desde cero](docs/desde-cero.md).
+
 ## Requisitos y red
 
 - Docker Engine con el complemento Compose v2, Bash y una herramienta para descomprimir el ZIP oficial de SuiteCRM 8.10.2.
