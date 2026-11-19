@@ -2,6 +2,8 @@
 
 Este repositorio contiene el ZIP de instalación de los 11 módulos AgroSync, el paquete editable del Constructor de módulos, las extensiones de API usadas por el backend y la configuración Docker de desarrollo. SuiteCRM se descarga por separado.
 
+**El ZIP instala los módulos. Instala las extensiones de API V8 por separado** para habilitar los permisos, las cosechas y la ganadería que usa Java.
+
 | Ruta | Uso |
 |---|---|
 | [AgroSync-SuiteCRM-8.10.2.zip](AgroSync-SuiteCRM-8.10.2.zip) | Instalar los módulos desde el Cargador de módulos. |
@@ -20,49 +22,61 @@ Este repositorio contiene el ZIP de instalación de los 11 módulos AgroSync, el
 
 ## Reinstalar en un entorno nuevo
 
-1. Descarga el ZIP instalable oficial [SuiteCRM 8.10.2](https://suitecrm.com/wpfd_file/suitecrm-8-10-2/). Extráelo en `suitecrm/` de modo que existan `suitecrm/public/`, `suitecrm/bin/console` y `suitecrm/VERSION`.
-2. Copia `.env.example` como `.env`, dale permisos `600` y completa `DB_PASSWORD` y `DB_ROOT_PASSWORD` con valores propios. Para ejecutar la nueva instancia junto a la existente, usa otro `COMPOSE_PROJECT_NAME`, otro `SUITECRM_HOST_PORT` y otro directorio de SuiteCRM. Comprueba la configuración sin volcar las variables al terminal.
+### 1. Arrancar SuiteCRM
 
-   ```bash
-   cp .env.example .env
-   chmod 600 .env
-   # Completa el archivo privado con tu editor.
-   docker compose config --quiet
-   docker compose up -d --build
-   docker compose ps
-   ```
+Descarga el [ZIP oficial de SuiteCRM 8.10.2](https://suitecrm.com/wpfd_file/suitecrm-8-10-2/) y extráelo en `./suitecrm`. En ese directorio deben quedar `public/`, `bin/console` y `VERSION`. Ejecuta los bloques de esta sección desde la raíz de `agrosync-suitecrm`.
 
-   En Linux, si el instalador indica que el directorio recién extraído no es escribible por Apache, ejecuta `docker compose exec app chown -R www-data:www-data /var/www/html` en el **proyecto nuevo**.
+```bash
+if [ ! -e .env ]; then
+  (umask 077; cp .env.example .env)
+fi
+chmod 600 .env
+```
 
-3. Abre `http://127.0.0.1:8080/` o el puerto elegido. Instala SuiteCRM desde el navegador. Usa `db` como host de MariaDB, `3306` como puerto, y `suitecrm` como nombre de base y usuario. Introduce el valor local de `DB_PASSWORD`. Crea tu cuenta administradora en el formulario.
-4. En **Administración → Cargador de módulos**, sube el ZIP de AgroSync sin descomprimir y pulsa **Instalar**. Ejecuta **Reparación rápida y reconstrucción**, y comprueba los módulos de AgroSync. Los archivos compilados de Studio y las relaciones se generan desde el paquete y la reconstrucción.
-5. Instala las extensiones V8 aparte. El manifiesto del ZIP no instala las cuatro rutas de AgroSync ni el archivo que las registra. La carpeta `suitecrm-custom` contiene esos cinco PHP. Añade las extensiones de API con el usuario que tenga permisos de escritura en el directorio de SuiteCRM. Si necesitas editar el paquete en el Constructor, instala también sus fuentes por separado.
+Edita `.env` y completa `DB_PASSWORD` y `DB_ROOT_PASSWORD`. Para mantener una instancia existente en paralelo, asigna otro `COMPOSE_PROJECT_NAME`, otro `SUITECRM_HOST_PORT` y un `SUITECRM_DIR` separado. `SUITECRM_IMAGE_NAME` permite usar una etiqueta distinta para la imagen.
 
-   ```bash
-   ./scripts/instalar-personalizaciones.sh ./suitecrm api
-   ./scripts/instalar-personalizaciones.sh ./suitecrm constructor
-   ```
+```bash
+docker compose --env-file .env config --quiet &&
+  docker compose --env-file .env up -d --build db app &&
+  docker compose --env-file .env ps
+```
 
-   Si Apache es propietario de `public/legacy/custom` en la instalación nueva y tu usuario no puede escribir ahí, cambia temporalmente el propietario de esa carpeta antes de ejecutar los scripts y devuelve la propiedad a Apache al terminar.
+Abre `http://127.0.0.1:8080/` o el puerto de `SUITECRM_HOST_PORT`. Completa el asistente con el host `db`, puerto `3306`, base y usuario `suitecrm`, y la contraseña `DB_PASSWORD`. Crea la cuenta administradora de esa instancia. Si Apache necesita permisos en una extracción nueva en Linux, ejecuta en el proyecto nuevo `docker compose --env-file .env exec app chown -R www-data:www-data /var/www/html`.
 
-   ```bash
-   docker compose exec app chown -R "$(id -u):$(id -g)" /var/www/html/public/legacy/custom
-   ./scripts/instalar-personalizaciones.sh ./suitecrm api
-   ./scripts/instalar-personalizaciones.sh ./suitecrm constructor  # Opcional
-   docker compose exec app chown -R www-data:www-data /var/www/html/public/legacy/custom
-   ```
+### 2. Instalar el ZIP de AgroSync
 
-   Usa el directorio que configuraste en `SUITECRM_DIR` si es distinto de `./suitecrm`. El instalador puede ejecutarse varias veces. Si encuentra archivos distintos, se detiene para conservar la personalización existente. Si la otra instalación ya usa rutas V8 personalizadas, integra en su `Config/routes.php` las cuatro instrucciones `require` de la [plantilla del repositorio](suitecrm-custom/custom/application/Ext/Api/V8/Config/routes.php) y conserva el resto de su archivo. Revisa los archivos PHP de AgroSync antes de copiarlos a las rutas que indica la plantilla.
+En **Administración → Cargador de módulos**, sube `AgroSync-SuiteCRM-8.10.2.zip` sin descomprimir y selecciona **Instalar**. Ejecuta **Reparación rápida y reconstrucción**. Si la pantalla ofrece SQL pendiente, aplícalo desde la opción de reparación.
 
-6. Aplica el [procedimiento de roles y grupos](docs/roles-y-grupos.md) y su [matriz](docs/permisos-agrosync.csv).
-7. Si necesitas el scheduler y el worker, actívalos después de instalar SuiteCRM con `docker compose --profile jobs up -d`.
+### 3. Instalar las extensiones V8 por separado
+
+El ZIP no instala los cinco archivos PHP de la API de AgroSync, incluido el que registra las rutas. El siguiente bloque resuelve el directorio de SuiteCRM desde el montaje real del servicio `app`. Requiere permisos de escritura en `public/legacy/custom`.
+
+```bash
+app_id=$(docker compose --env-file .env ps -q app) &&
+  test -n "$app_id" &&
+  crm_dir=$(docker inspect --format '{{range .Mounts}}{{if eq .Destination "/var/www/html"}}{{.Source}}{{end}}{{end}}' "$app_id") &&
+  test -n "$crm_dir" &&
+  ./scripts/instalar-personalizaciones.sh "$crm_dir" api
+```
+
+En Linux con Docker local, si Apache es propietario de `public/legacy/custom`, puedes cambiar temporalmente la propiedad de esa carpeta **en la instalación nueva** con `docker compose --env-file .env exec app chown -R "$(id -u):$(id -g)" /var/www/html/public/legacy/custom`. Tras ejecutar el instalador, devuelve la propiedad a Apache con `docker compose --env-file .env exec app chown -R www-data:www-data /var/www/html/public/legacy/custom`.
+
+Para disponer del paquete editable en el Constructor, puedes ejecutar también `./scripts/instalar-personalizaciones.sh "$crm_dir" constructor` en la misma terminal, con los mismos permisos. El instalador admite ejecuciones repetidas y se detiene ante archivos distintos. Si ya existe un archivo compartido de rutas V8, integra las cuatro instrucciones `require` en ese archivo y conserva las rutas previas. [Plantilla de registro de rutas](suitecrm-custom/custom/application/Ext/Api/V8/Config/routes.php)
+
+### 4. Configurar acceso por finca
+
+Aplica el [procedimiento de roles y grupos](docs/roles-y-grupos.md) y la [matriz de permisos](docs/permisos-agrosync.csv). Si necesitas los servicios en segundo plano, arráncalos tras instalar SuiteCRM.
+
+```bash
+docker compose --env-file .env --profile jobs up -d scheduler worker
+```
 
 ## Integrar el backend Java
 
 En una instancia nueva, genera el par de firma OAuth dentro del contenedor. El comando comprueba que no haya claves previas antes de escribir. Si la instancia ya tiene ambos archivos, conserva los existentes. [Documentación de OAuth2 V8](https://docs.suitecrm.com/developer/integration-api/v8/installation/)
 
 ```bash
-docker compose exec --user www-data app sh -ec '
+docker compose --env-file .env exec --user www-data app sh -ec '
   cd public/legacy/Api/V8/OAuth2
   test ! -e private.key && test ! -e public.key
   umask 077
@@ -77,6 +91,7 @@ Configura las variables en el entorno de Java o en el `.env` privado del proyect
 
 | Variable | Valor |
 |---|---|
+| `SERVER_PORT` | Puerto local de Java, por defecto `8081`. Si cambia, ajusta también la URL de retorno. |
 | `SUITECRM_CLIENT_ID`, `SUITECRM_CLIENT_SECRET` | Credenciales del cliente técnico. |
 | `AGROSYNC_OAUTH_CLIENT_ID`, `AGROSYNC_OAUTH_CLIENT_SECRET` | Credenciales del cliente de login delegado. |
 | `SUITECRM_BASE_URL` | Para Java ejecutado en el anfitrión, `http://127.0.0.1:8080` o el puerto que publicaste. |
@@ -85,6 +100,28 @@ Configura las variables en el entorno de Java o en el `.env` privado del proyect
 | `AGROSYNC_OAUTH_CALLBACK` | URL exacta registrada en el cliente delegado. |
 | `AGROSYNC_FRONTEND_ORIGIN` | Origen exacto de React, por defecto `http://127.0.0.1:5173`. |
 
-Comprueba `GET http://127.0.0.1:8081/actuator/health` tras arrancar el backend. Desde React, inicia sesión con un usuario activo de SuiteCRM y comprueba que solo aparecen sus fincas autorizadas. Con el perfil Consulta, verifica que Java rechaza el registro de una operación. La ruta `GET /Api/V8/custom/agrosync/access` resuelve los permisos del usuario delegado y rechaza el token técnico.
+Desde la raíz de `agrosync-backend`, con su propio `.env` ya configurado, arranca el servicio `backend`. Sustituye el puerto del comando `curl` si cambiaste `SERVER_PORT`.
 
-El repositorio excluye el núcleo de SuiteCRM, archivos de configuración de la instancia, claves OAuth, tokens, datos y respaldos. Si haces una instalación nueva, sigue la [guía oficial de SuiteCRM](https://docs.suitecrm.com/8.x/admin/installation-guide/downloading-installing/).
+```bash
+docker compose --env-file .env config --quiet &&
+  docker compose --env-file .env up -d --build backend
+curl -fsS http://127.0.0.1:8081/actuator/health
+```
+
+Comprueba el login desde React con un usuario activo de SuiteCRM y confirma que aparecen sus fincas autorizadas. Con el perfil Consulta, verifica el rechazo de una operación de registro. La ruta de permisos delegados es `GET /Api/V8/custom/agrosync/access`.
+
+## Resultados de la reinstalación aislada
+
+La instalación usó SuiteCRM 8.10.2, PHP 8.3.36 y una base vacía en MariaDB 10.11.18, con red y volumen propios. Se reutilizó una imagen PHP ya construida.
+
+| Comprobación ejecutada | Resultado observado |
+|---|---|
+| Instalador oficial y gestor nativo de paquetes, por consola | SuiteCRM guardó la versión 8.10.2. Tras instalar el ZIP y reparar, se verificaron los 11 módulos y sus tablas. |
+| Alcance del ZIP y script de API | Tras instalar el ZIP, el registro de rutas V8 seguía ausente. El script añadió los cinco PHP, que pasaron la comprobación de sintaxis. Repetir el script no introdujo cambios. |
+| Peticiones HTTP con token técnico | Metadatos y listado de `ags_Fincas` devolvieron HTTP 200. Las rutas personalizadas de acceso, cosechas y ganadería devolvieron HTTP 403. |
+| Permisos con grupos de prueba | Se resolvió una finca con un perfil y se detectó el conflicto al asignar dos perfiles para esa misma finca. |
+| Arranque de Java | Un contenedor independiente arrancó en la red de prueba y `/actuator/health` devolvió `UP`. |
+
+Quedan pendientes la instalación desde la pantalla del Cargador, la comprobación visual del Constructor, la revisión de cada permiso de la matriz ACL y el login delegado completo entre navegador y Java. Consulta también los [resultados de la restauración de la base](docs/validacion.md#restauración-de-la-base).
+
+El repositorio excluye el núcleo de SuiteCRM, archivos de configuración de la instancia, claves OAuth, tokens, datos y respaldos. [Guía oficial de instalación de SuiteCRM](https://docs.suitecrm.com/8.x/admin/installation-guide/downloading-installing/)
