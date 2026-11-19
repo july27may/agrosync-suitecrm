@@ -1,0 +1,50 @@
+name: ${COMPOSE_PROJECT_NAME:-suitecrm810}
+
+x-suitecrm-base: &suitecrm-base
+  build: .
+  image: ${SUITECRM_IMAGE_NAME:-suitecrm810-php:local}
+  working_dir: /var/www/html
+  volumes:
+    - ${SUITECRM_DIR:-./suitecrm}:/var/www/html
+  depends_on:
+    db:
+      condition: service_healthy
+  restart: unless-stopped
+
+services:
+  db:
+    image: mariadb:10.11
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: suitecrm
+      MARIADB_USER: suitecrm
+      MARIADB_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD en .env}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?Define DB_ROOT_PASSWORD en .env}
+    volumes:
+      - suitecrm_db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  app:
+    <<: *suitecrm-base
+    ports:
+      - "127.0.0.1:${SUITECRM_HOST_PORT:-8080}:80"
+
+  scheduler:
+    <<: *suitecrm-base
+    profiles: ["jobs"]
+    user: "www-data"
+    command: ["sh", "-c", "while true; do php bin/console schedulers:run; sleep 60; done"]
+
+  worker:
+    <<: *suitecrm-base
+    profiles: ["jobs"]
+    user: "www-data"
+    command: ["sh", "-c", "while true; do php bin/console messenger:consume internal-async --time-limit=3600 --memory-limit=256M; sleep 5; done"]
+
+volumes:
+  suitecrm_db_data:

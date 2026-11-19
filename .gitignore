@@ -1,0 +1,12 @@
+/suitecrm/
+/backups/
+/.env
+/.env.*
+!/.env.example
+*.sql
+*.sql.gz
+*.sql.gz.sha256
+*.pem
+*.key
+*.log
+/[Ss]uite[Cc][Rr][Mm]*.zip

@@ -1,0 +1,217 @@
+rol,módulo,acceso,listar,ver,editar,eliminar,importar,exportar,actualizar_en_masa
+AgroSync Administrador de finca,Accounts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Alerts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_animales,Habilitado,Grupo,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AsyncTaskItems,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Bugs,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,CalendarAccount,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Calls,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Calls_Reschedule,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Campaigns,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOP_Case_Events,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOP_Case_Updates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Cases,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Contacts,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOS_Contracts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_cosechas,Habilitado,Grupo,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_departamentos,Habilitado,Todos,Todos,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Documents,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,EAPM,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,EmailTemplates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,EmailMarketing,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Emails,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_eventos_sanitarios,Habilitado,Grupo,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,FP_events,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ExternalOAuthConnection,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ExternalOAuthProvider,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_Fincas,Habilitado,Grupo,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,InboundEmail,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_insumos,Habilitado,Grupo,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOS_Invoices,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOK_Knowledge_Base_Categories,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOK_KnowledgeBase,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_labores,Habilitado,Grupo,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Leads,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,FP_Event_Locations,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_lotes,Habilitado,Grupo,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,jjwg_Maps,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,jjwg_Address_Cache,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,jjwg_Areas,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,jjwg_Markers,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,MediaObjects,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Meetings,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ManualMigrationTasks,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_movimientos_inventario,Habilitado,Grupo,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_municipios,Habilitado,Todos,Todos,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Notes,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Opportunities,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,OutboundEmailAccounts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOS_PDF_Templates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOW_Processed,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Processes,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOS_Products,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOS_Product_Categories,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AM_TaskTemplates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ProjectTask,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Project,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AM_ProjectTemplates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOS_Quotes,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOR_Reports,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOR_Scheduled_Reports,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,SecurityGroups,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,SurveyQuestionOptions,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,SurveyQuestionResponses,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,SurveyQuestions,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,SurveyResponses,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Surveys,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Prospects,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ProspectLists,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Tasks,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,TemplateSectionLine,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,Users,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,ags_veredas,Habilitado,Todos,Todos,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Administrador de finca,AOW_WorkFlow,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Accounts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Alerts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_animales,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AsyncTaskItems,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Bugs,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,CalendarAccount,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Calls,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Calls_Reschedule,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Campaigns,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOP_Case_Events,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOP_Case_Updates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Cases,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Contacts,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOS_Contracts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_cosechas,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_departamentos,Habilitado,Todos,Todos,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Documents,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,EAPM,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,EmailTemplates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,EmailMarketing,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Emails,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_eventos_sanitarios,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,FP_events,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ExternalOAuthConnection,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ExternalOAuthProvider,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_Fincas,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,InboundEmail,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_insumos,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOS_Invoices,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOK_Knowledge_Base_Categories,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOK_KnowledgeBase,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_labores,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Leads,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,FP_Event_Locations,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_lotes,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,jjwg_Maps,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,jjwg_Address_Cache,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,jjwg_Areas,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,jjwg_Markers,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,MediaObjects,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Meetings,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ManualMigrationTasks,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_movimientos_inventario,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_municipios,Habilitado,Todos,Todos,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Notes,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Opportunities,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,OutboundEmailAccounts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOS_PDF_Templates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOW_Processed,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Processes,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOS_Products,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOS_Product_Categories,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AM_TaskTemplates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ProjectTask,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Project,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AM_ProjectTemplates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOS_Quotes,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOR_Reports,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOR_Scheduled_Reports,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,SecurityGroups,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,SurveyQuestionOptions,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,SurveyQuestionResponses,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,SurveyQuestions,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,SurveyResponses,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Surveys,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Prospects,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ProspectLists,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Tasks,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,TemplateSectionLine,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,Users,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,ags_veredas,Habilitado,Todos,Todos,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Registrador,AOW_WorkFlow,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Accounts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Alerts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_animales,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AsyncTaskItems,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Bugs,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,CalendarAccount,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Calls,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Calls_Reschedule,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Campaigns,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOP_Case_Events,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOP_Case_Updates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Cases,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Contacts,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOS_Contracts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_cosechas,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_departamentos,Habilitado,Todos,Todos,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Documents,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,EAPM,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,EmailTemplates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,EmailMarketing,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Emails,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_eventos_sanitarios,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,FP_events,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ExternalOAuthConnection,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ExternalOAuthProvider,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_Fincas,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,InboundEmail,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_insumos,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOS_Invoices,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOK_Knowledge_Base_Categories,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOK_KnowledgeBase,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_labores,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Leads,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,FP_Event_Locations,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_lotes,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,jjwg_Maps,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,jjwg_Address_Cache,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,jjwg_Areas,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,jjwg_Markers,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,MediaObjects,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Meetings,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ManualMigrationTasks,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_movimientos_inventario,Habilitado,Grupo,Grupo,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_municipios,Habilitado,Todos,Todos,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Notes,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Opportunities,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,OutboundEmailAccounts,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOS_PDF_Templates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOW_Processed,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Processes,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOS_Products,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOS_Product_Categories,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AM_TaskTemplates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ProjectTask,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Project,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AM_ProjectTemplates,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOS_Quotes,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOR_Reports,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOR_Scheduled_Reports,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,SecurityGroups,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,SurveyQuestionOptions,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,SurveyQuestionResponses,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,SurveyQuestions,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,SurveyResponses,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Surveys,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Prospects,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ProspectLists,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Tasks,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,TemplateSectionLine,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,Users,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,ags_veredas,Habilitado,Todos,Todos,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
+AgroSync Consulta,AOW_WorkFlow,Deshabilitado,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno,Ninguno
