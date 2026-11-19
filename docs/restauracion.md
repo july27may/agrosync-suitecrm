@@ -20,11 +20,15 @@ gzip -t suitecrm810-AAAAmmdd-HHMMSS.sql.gz
    ```bash
    set -o pipefail
    backup=/ruta/privada/suitecrm810-AAAAmmdd-HHMMSS.sql.gz
+   proyecto=agrosync-restauracion
+   docker compose --env-file .env.restauracion -p "$proyecto" ps
+   docker compose --env-file .env.restauracion -p "$proyecto" --profile jobs stop app scheduler worker
+   docker compose --env-file .env.restauracion -p "$proyecto" up -d --wait db
    gzip -dc "$backup" |
-     docker compose --env-file .env.restauracion exec -T db sh -ceu '
+     docker compose --env-file .env.restauracion -p "$proyecto" exec -T db sh -ceu '
        exec mariadb -u"$MARIADB_USER" -p"$MARIADB_PASSWORD" "$MARIADB_DATABASE"
      '
    ```
 
-   Define un `COMPOSE_PROJECT_NAME` distinto en `.env.restauracion` antes de ejecutar el comando. Comprueba el destino con `docker compose --env-file .env.restauracion ps`.
-4. Valida los conteos de fincas, cosechas, animales y eventos en el destino. Comprueba los usuarios, grupos y roles recuperados. Verifica las rutas de la API y prepara clientes OAuth con credenciales nuevas para el entorno restaurado. Las sesiones anteriores no deben darse por válidas.
+   Configura en `.env.restauracion` el directorio separado de SuiteCRM, el puerto local alternativo y las contraseñas locales. El valor de `-p` fija explícitamente el proyecto de destino. Comprueba el nombre indicado por `ps` antes de importar.
+4. Vuelve a iniciar la aplicación con `docker compose --env-file .env.restauracion -p "$proyecto" up -d app`. Valida los conteos de fincas, cosechas, animales y eventos en el destino. Comprueba los usuarios, grupos y roles recuperados. Verifica las rutas de la API y prepara clientes OAuth con credenciales nuevas para el entorno restaurado. Las sesiones anteriores no deben darse por válidas.
