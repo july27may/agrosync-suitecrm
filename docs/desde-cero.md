@@ -76,4 +76,6 @@ npm ci &&
 3. Guarda y vuelve a abrir la página sin conexión en el mismo perfil. Busca la recolección pendiente. Reconecta con AgroSync abierto y revisa el acuse automático y la consulta semanal de esa finca. Con solo esa recolección, el subtotal esperado es 25.000 COP.
 4. Abre **Ganadería** con conexión y espera que cargue la finca antes de trabajar offline. Registra `DEMO-A01` como `Animal Demo 01`, con sexo hembra y estado activo. Añade un evento de revisión con fecha de hoy. Al reconectar, espera el envío automático y comprueba que el evento quedó asociado al animal.
 
+5. Abre **Registros → Labores cafeteras** y espera que carguen los registros y el catálogo de contactos. Sin conexión, crea una labor con **Responsable de la labor**. Cierra la pestaña, vuelve a abrir AgroSync en el mismo perfil y consulta la labor pendiente. Al reconectar, comprueba que el mismo contacto aparece en la labor confirmada. Si el navegador perdió la sesión de Java, vuelve a iniciar sesión y espera el envío automático. El responsable es opcional. En SuiteCRM se muestra en el campo **Responsable de la labor**.
+
 Revisa los [resultados de la demostración aislada](validacion-demo.md) para distinguir las comprobaciones ejecutadas de los casos pendientes.

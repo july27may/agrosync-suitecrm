@@ -11,7 +11,7 @@ function agrosyncRecordQuery(string $kind): array
         'fincas' => ['ags_Fincas', 'ags_fincas r', 'r.id', 'r.codigo_finca AS codigo'],
         'lotes' => ['ags_lotes', 'ags_lotes r', 'r.finca_id', 'r.codigo_lote AS codigo'],
         'labores' => ['ags_labores', 'ags_labores r JOIN ags_lotes l ON l.id=r.lote_id AND l.deleted=0',
-            'l.finca_id', 'r.lote_id AS loteId,r.fecha,r.tipo_labor AS tipo'],
+            'l.finca_id', 'r.lote_id AS loteId,r.fecha,r.tipo_labor AS tipo,r.responsable_id AS responsableId'],
         'cosechas' => ['ags_cosechas', 'ags_cosechas r JOIN ags_lotes l ON l.id=r.lote_id AND l.deleted=0',
             'l.finca_id', 'r.lote_id AS loteId,r.recolector_id AS recolectorId,r.fecha,r.estado_cafe AS estadoCafe,
                          r.cantidad_kg AS pesoKg,r.tarifa_kg AS tarifaKg'],
@@ -32,7 +32,15 @@ function agrosyncRecords($db, string $kind, string $farmId, ?string $recordId = 
     $record = $recordId === null ? '' : ' AND r.id=' . $db->quoted($recordId);
     $rows = agrosyncInventoryRows($db, "SELECT r.id,r.name AS nombre,r.date_modified AS modificado,$columns
         FROM $from WHERE r.deleted=0 AND $farmColumn=$farm$record ORDER BY r.name,r.id");
-    return array_map(static fn ($row) => $row + ['version'=>agrosyncRecordVersion($row)], $rows);
+    return array_map(static function ($row) use ($kind) {
+        $versionFields = $row;
+        if ($kind === 'labores' && ($row['responsableId'] ?? '') === '') {
+            // Mantiene vigentes las versiones que se descargaron antes de consultar el responsable.
+            $row['responsableId'] = null;
+            unset($versionFields['responsableId']);
+        }
+        return $row + ['version'=>agrosyncRecordVersion($versionFields)];
+    }, $rows);
 }
 
 $app->get('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas|animales|eventos}', function ($request, $response, $args) {
@@ -82,12 +90,19 @@ $app->post('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas|anim
         $lot = $input['loteId'] ?? null;
         $date = $input['fecha'] ?? null;
         $type = $input['tipo'] ?? null;
+        $responsible = $input['responsableId'] ?? null;
         if (!agrosyncLivestockId($lot) || !agrosyncLivestockDate($date)
-            || !in_array($type, ['siembra','fertilizacion','control_malezas','poda','otra'], true)) {
+            || !in_array($type, ['siembra','fertilizacion','control_malezas','poda','otra'], true)
+            || ($responsible !== null && $responsible !== '' && !agrosyncLivestockId($responsible))) {
             return agrosyncLivestockReply($response, 400, ['code'=>'LABOR_INVALIDA']);
         }
         $fields += ['lote_id'=>$lot, 'fecha'=>$date, 'tipo_labor'=>$type];
         $compare += ['loteId'=>$lot, 'fecha'=>$date, 'tipo'=>$type];
+        // Los envíos anteriores omiten el campo. Una cadena vacía lo deja sin responsable.
+        if ($responsible !== null) {
+            $fields['responsable_id'] = $responsible;
+            $compare['responsableId'] = $responsible === '' ? null : $responsible;
+        }
     } elseif ($kind === 'cosechas') {
         $lot = $input['loteId'] ?? null;
         $collector = $input['recolectorId'] ?? null;
@@ -187,8 +202,10 @@ $app->post('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas|anim
                 return agrosyncLivestockReply($response, 200, json_decode($previous['receipt'], true, 512, JSON_THROW_ON_ERROR));
             }
         }
-        if (isset($collector)) {
-            $contact = BeanFactory::getBean('Contacts', $collector);
+        $contactId = $collector ?? ($kind === 'labores' ? $responsible : null);
+        if ($contactId !== null && $contactId !== ''
+            && ($kind !== 'labores' || $contactId !== ($original['responsableId'] ?? null))) {
+            $contact = BeanFactory::getBean('Contacts', $contactId);
             if (empty($contact->id) || !$contact->ACLAccess('view')) return $response->withStatus(403);
         }
         if (isset($lot) && !agrosyncRecords($db, 'lotes', $farm, $lot)) return $response->withStatus(403);
@@ -253,6 +270,9 @@ $app->post('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas|anim
             agrosyncSetRecordGroups($bean, $groups);
             $saved = agrosyncRecords($db, $kind, $farm, $key)[0] ?? null;
             if (!$saved) throw new RuntimeException('El registro quedó fuera del alcance de la finca.');
+            if ($kind === 'labores' && $responsible !== null && $saved['responsableId'] !== $compare['responsableId']) {
+                throw new RuntimeException('No se confirmó el responsable de la labor.');
+            }
             $receipt = ['operationId'=>$op, 'registro'=>$saved];
             if ($id !== null) {
                 $actorSql = $db->quoted($user->id);

@@ -34,9 +34,13 @@ case "$2" in
                     continue
                 fi
                 if [[ "$path" == "$chdir_source/registros.php" && -f "$target" && ! -L "$target" ]] &&
-                    [[ $(sha256sum "$target" | cut -d' ' -f1) == 1f9cad7f540ff774febd1190ee810798c3158e759753033039367b1e4da0eb7c ]]; then
-                    upgrade+=("$path")
-                    continue
+                    read -r current_hash _ < <(sha256sum "$target"); then
+                    case "$current_hash" in
+                        1f9cad7f540ff774febd1190ee810798c3158e759753033039367b1e4da0eb7c|25b5caee054691824a5f3d86af00c6bd718c5aa8d3cc10260d314c14bd7f5d32)
+                            upgrade+=("$path")
+                            continue
+                            ;;
+                    esac
                 fi
                 printf 'Ya existe una personalización distinta en %s. Revísala antes de integrar AgroSync.\n' "$target" >&2
                 exit 3
