@@ -20,15 +20,16 @@ case "$2" in
         registration=custom/application/Ext/Api/V8/Config/routes.php
         chdir_source=custom/Extension/application/Ext/Api/V8
         files=("$chdir_source/agrosync.php" "$chdir_source/cosechas.php"
-               "$chdir_source/cosechas-semanales.php" "$chdir_source/ganaderia.php" "$chdir_source/inventario.php" "$chdir_source/registros.php" "$registration")
+               "$chdir_source/cosechas-semanales.php" "$chdir_source/ganaderia.php" "$chdir_source/inventario.php" "$chdir_source/registros.php" "$chdir_source/bitacora.php" "$registration")
 
         upgrade=()
         for path in "${files[@]}"; do
             target="$legacy/$path"
             if [[ -e "$target" || -L "$target" ]] && ! cmp -s -- "$source/$path" "$target"; then
                 if [[ "$path" == "$registration" && -f "$target" && ! -L "$target" ]] &&
-                    sed '/^require .*\/inventario\.php.*;$/d; /^require .*\/registros\.php.*;$/d' "$source/$path" |
-                        cmp -s -- - "$target"; then
+                    (sed '/^require .*\/bitacora\.php.*;$/d' "$source/$path" | cmp -s -- - "$target" ||
+                     sed '/^require .*\/inventario\.php.*;$/d; /^require .*\/registros\.php.*;$/d; /^require .*\/bitacora\.php.*;$/d' "$source/$path" |
+                         cmp -s -- - "$target"); then
                     upgrade+=("$path")
                     continue
                 fi

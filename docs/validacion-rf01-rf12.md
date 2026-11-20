@@ -15,7 +15,7 @@ Revisión del documento de Fase 4 y del código de React, Java y SuiteCRM. La pr
 | RF09 · Modificaciones concurrentes | Pendiente en registros de datos. | Dos ediciones diferentes usaron la misma versión de un lote. La primera se confirmó y la otra recibió HTTP 409. React presentó la versión central y el borrador. El usuario guardó y sincronizó una revisión aceptada. | Las ediciones directas por otros canales de SuiteCRM no usan el bloqueo de AgroSync. |
 | RF10 · Roles y fincas | Parcial. La autorización existía. | Login real con cuentas temporales regulares. Consulta pudo leer su inventario (HTTP 200) y recibió HTTP 403 al intentar escribir. Una cuenta sin finca recibió HTTP 403 tanto al leer como al escribir. Ambas recibieron HTTP 403 al intentar dar de alta una finca. | Se probaron los permisos de las funciones nuevas en AgroSync. La matriz nativa completa de SuiteCRM y la política provisional offline requieren validación operativa con la finca. |
 | RF11 · Historial y exportación | Parcial. Había historial sin exportación integrada. | Descarga CSV de inventario verificada en Chromium. Café y Sanidad también se descargaron contra SuiteCRM real. Café incluyó 12,500 kg del recolector ficticio. Sanidad incluyó el evento y el animal corregidos con estado Confirmado. | Exportaciones comprobadas para la selección autorizada. |
-| RF12 · Incidencias y auditoría | Parcial. Las operaciones ya tenían identificador. | La vista Incidencias consulta el identificador y la causa por usuario y finca. La regresión de un acuse perdido comprobó que el error se conserva y luego el reintento confirma el registro. En SuiteCRM se conserva el movimiento de origen de la compensación. | **Parcial.** La tabla de acuses asegura idempotencia, pero falta una bitácora central consultable de intentos, errores y resoluciones entre dispositivos. |
+| RF12 · Incidencias y auditoría | Parcial. Las operaciones ya tenían identificador. | **Implementado y verificado.** La bitácora central registra intentos, resultados, causas y resoluciones por operación, usuario, finca y fecha. Una cuenta Consulta accedió desde un navegador limpio y una cuenta ajena recibió HTTP 403. Se verificaron reenvíos de edición, resolución e inventario sin alterar los acuses ni repetir efectos. | Los eventos centrales comienzan con este despliegue. La consulta central requiere conexión. |
 
 ## Datos observados en el entorno de prueba
 
@@ -56,3 +56,28 @@ Las modificaciones por Studio, la interfaz nativa, las importaciones o integraci
 El despliegue conserva los módulos y personalizaciones existentes. Se aplicó una migración aditiva de acuses y se sustituyó solo la versión reconocida de la extensión de Registros. Se verificó el respaldo de los archivos y la configuración con SHA-256. La restauración de prueba de la base recuperó 255 tablas, una finca, cuatro cosechas y dos animales.
 
 En la instancia activa, Java respondió `UP` y React respondió HTTP 200. La API nativa devolvió HTTP 200 para Fincas, Cosechas, Animales, Eventos sanitarios, Insumos y Movimientos. Se verificaron La Quiebra, cuatro cosechas y dos animales. Los módulos sanitarios y de inventario respondieron con colecciones vacías. Las rutas delegadas de Inventario y de edición de Ganadería rechazaron el token técnico con HTTP 403. La comprobación funcional con una cuenta personal se ejecutó en la instancia aislada.
+
+
+## Bitácora central RF12
+
+La tabla `agrosync_bitacora` almacena únicamente metadatos y causas de una lista permitida. Cada intento tiene su propio UUID y como máximo un resultado. Se reutiliza el `operationId` de negocio en cada reintento. Las resoluciones tienen un UUID propio, conservan la operación de origen y, si se propone una corrección, permiten identificar su operación nueva. La bitácora y los acuses de edición viven en tablas distintas.
+
+En SuiteCRM, Java y Chromium aislados se verificó lo siguiente.
+
+- Una salida con un insumo inexistente devolvió HTTP 403. La bitácora registró `INTENTO` y `ERROR` con causa `ACCESO_DENEGADO`. El evento incluyó el usuario autenticado, la finca y una fecha registrada por el servidor.
+- Un borrador con versión anterior generó `VERSION_INCOMPATIBLE`. Se eligió conservar la ficha central sin conexión. Al reconectar apareció la resolución en SuiteCRM y reenviarla produjo una sola fila.
+- Una edición A reenviada después de B devolvió el acuse original de A y la ficha central siguió en B. La resolución anterior y los reenvíos no cambiaron ese acuse.
+- Dos envíos con el mismo identificador de una entrada de 10 kg generaron dos intentos, un solo movimiento y un incremento de 10 kg.
+- Consulta vio el conflicto y su resolución en Chromium con un perfil nuevo. Su intento de registrar una resolución recibió HTTP 403. Una cuenta ajena recibió HTTP 403 al consultar.
+- Pasaron 21 pruebas de Java, 6 de Playwright y la validación de sintaxis de la extensión PHP.
+
+Las incidencias de un envío que nunca llegó a Java quedan en el dispositivo. Si SuiteCRM no puede guardar el inicio, Java detiene ese envío antes de ejecutar el cambio. Si la conexión cae al registrar el resultado, puede quedar un intento sin resultado y el reenvío usa el mismo identificador de negocio. El historial previo al despliegue se conserva donde se creó. Los cambios directos en SuiteCRM quedan fuera de la bitácora de sincronización de AgroSync.
+
+### Verificación del despliegue existente
+
+- React en `127.0.0.1:5173` sirvió `index-D54VucqB.js`. Su SHA-256 coincidió con la compilación local y el archivo incluyó la vista **Bitácora central**.
+- Java en `127.0.0.1:8081` devolvió `UP`. El SHA-256 del JAR dentro del contenedor activo coincidió con el del artefacto candidato `fb7c9d5d4f0350cc82c58b43becf447267b7e966f1f5e91460d6be22a84440ae`.
+- Los dos PHP activos de ruta y bitácora coincidieron con el repositorio. La tabla quedó creada. Una petición técnica a la ruta activa devolvió HTTP 403, según la política de identidad delegada.
+- Se conservaron una finca, cuatro cosechas y dos animales. Se respaldaron la base y las extensiones V8 antes de la migración. Las pruebas que generaron operaciones ficticias se hicieron exclusivamente en la instancia aislada.
+
+La restauración de prueba del respaldo previo a RF12 recuperó 256 tablas, una finca, cuatro cosechas y dos animales en una MariaDB temporal sin red.

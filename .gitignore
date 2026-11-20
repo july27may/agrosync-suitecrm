@@ -12,3 +12,4 @@
 /[Ss]uite[Cc][Rr][Mm]*.zip
 
 !/scripts/sql/acuses-edicion.sql
+!/scripts/sql/bitacora.sql

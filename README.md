@@ -51,12 +51,13 @@ En **Administración → Cargador de módulos**, sube `AgroSync-SuiteCRM-8.10.2.
 
 ### 3. Instalar las extensiones V8 por separado
 
-Antes de instalar o actualizar estas extensiones, aplica la migración de acuses al servicio `db` del proyecto que estás preparando. La instrucción admite reejecución y no modifica las tablas de los módulos.
+Antes de instalar o actualizar estas extensiones, aplica las migraciones de acuses y bitácora al servicio `db` del proyecto que estás preparando. Las migraciones admiten reejecución y agregan tablas propias de AgroSync.
 
 ```bash
-docker compose --env-file .env exec -T db sh -ceu '
-  exec mariadb -u"$MARIADB_USER" -p"$MARIADB_PASSWORD" "$MARIADB_DATABASE"
-' < scripts/sql/acuses-edicion.sql
+cat scripts/sql/acuses-edicion.sql scripts/sql/bitacora.sql |
+  docker compose --env-file .env exec -T db sh -ceu '
+    exec mariadb -u"$MARIADB_USER" -p"$MARIADB_PASSWORD" "$MARIADB_DATABASE"
+  '
 ```
 
 El ZIP no instala los PHP de la API de AgroSync, incluido el archivo que registra las rutas. El siguiente bloque resuelve el directorio de SuiteCRM desde el montaje real del servicio `app`. Requiere permisos de escritura en `public/legacy/custom`.
