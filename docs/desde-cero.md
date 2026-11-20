@@ -72,8 +72,8 @@ npm ci &&
 ```
 
 1. Abre `http://127.0.0.1:5173/` en un perfil de navegador de prueba. Pulsa **Ingresar con SuiteCRM** y autoriza el cliente en el CRM. Comprueba que aparece **Finca Demo Horizonte**.
-2. En **Café**, descarga los catálogos y pulsa **Preparar dispositivo offline**. Espera el estado de preparación. Desconecta la red y selecciona **Finca Demo Horizonte**, **Lote Demo Norte** y **Recolector Demo 01**. Usa la fecha local de hoy, 12,5 kg, una tarifa de 2.000 COP/kg y un estado de café disponible.
-3. Guarda y vuelve a abrir la página sin conexión en el mismo perfil. Busca la recolección pendiente. Reconecta, pulsa **Sincronizar recolecciones** y revisa el acuse y la consulta semanal de esa finca. Con solo esa recolección, el subtotal esperado es 25.000 COP.
-4. En **Ganadería**, prepara la finca para trabajar offline. Registra `DEMO-A01` como `Animal Demo 01`, con sexo hembra y estado activo. Añade un evento de revisión con fecha de hoy. Al reconectar, sincroniza y comprueba que el evento quedó asociado al animal.
+2. En **Café**, espera a que la preparación automática muestre **Listo para trabajar sin conexión**. Desconecta la red y selecciona **Finca Demo Horizonte**, **Lote Demo Norte** y **Recolector Demo 01**. Usa la fecha local de hoy, 12,5 kg, una tarifa de 2.000 COP/kg y un estado de café disponible.
+3. Guarda y vuelve a abrir la página sin conexión en el mismo perfil. Busca la recolección pendiente. Reconecta con AgroSync abierto y revisa el acuse automático y la consulta semanal de esa finca. Con solo esa recolección, el subtotal esperado es 25.000 COP.
+4. Abre **Ganadería** con conexión y espera que cargue la finca antes de trabajar offline. Registra `DEMO-A01` como `Animal Demo 01`, con sexo hembra y estado activo. Añade un evento de revisión con fecha de hoy. Al reconectar, espera el envío automático y comprueba que el evento quedó asociado al animal.
 
 Revisa los [resultados de la demostración aislada](validacion-demo.md) para distinguir las comprobaciones ejecutadas de los casos pendientes.

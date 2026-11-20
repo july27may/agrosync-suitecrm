@@ -49,7 +49,7 @@ La instalación original y sus datos no se usaron para las escrituras de prueba.
 | Consulta | HTTP 200 en la finca asignada. | Las escrituras de la prueba recibieron HTTP 403. |
 | Usuario sin grupo de la finca | HTTP 403. | HTTP 403 en todas las escrituras de la prueba. |
 
-El alta de finca requiere un administrador global de SuiteCRM, conexión y un rol **AgroSync Administrador de finca** configurado. Ese alta inicia las asignaciones centrales de una nueva finca y crea su grupo de seguridad. Las ediciones offline aplican a registros descargados y confirmados. Abre **Registros → Animales** y **Registros → Eventos sanitarios** con conexión antes de salir a campo y pulsa **Preparar registros offline**. Guarda las correcciones y, al volver a conectar, pulsa **Sincronizar registros** en cada tipo de registro.
+El alta de finca requiere un administrador global de SuiteCRM, conexión y un rol **AgroSync Administrador de finca** configurado. Ese alta inicia las asignaciones centrales de una nueva finca y crea su grupo de seguridad. Las ediciones offline aplican a registros descargados y confirmados. Abre **Registros → Animales** y **Registros → Eventos sanitarios** con conexión antes de salir a campo y espera que se carguen sus datos. Guarda las correcciones y vuelve a conectar con la aplicación abierta. El envío se intenta automáticamente y **Sincronizar ahora** sigue disponible.
 
 Las modificaciones por Studio, la interfaz nativa, las importaciones o integraciones ajenas a AgroSync se rigen por las ACL de SuiteCRM. Esos canales no participan en el bloqueo, control de versiones ni acuses de AgroSync. Para preservar esas garantías, las correcciones y movimientos operativos deben pasar por AgroSync. Un cambio nativo previo que altere la ficha descargada puede detectarse al sincronizar, pero una escritura nativa simultánea no comparte el bloqueo.
 
@@ -81,3 +81,12 @@ Las incidencias de un envío que nunca llegó a Java quedan en el dispositivo. S
 - Se conservaron una finca, cuatro cosechas y dos animales. Se respaldaron la base y las extensiones V8 antes de la migración. Las pruebas que generaron operaciones ficticias se hicieron exclusivamente en la instancia aislada.
 
 La restauración de prueba del respaldo previo a RF12 recuperó 256 tablas, una finca, cuatro cosechas y dos animales en una MariaDB temporal sin red.
+
+
+## Preparación y sincronización automática · RF05, RF07 y RF08
+
+En la versión anterior, **Actualizar catálogos** recorría las páginas de fincas, lotes y contactos y las almacenaba en IndexedDB. **Preparar dispositivo offline** solicitaba la autorización firmada a Java. El service worker preparaba el caché de la aplicación por separado, al abrirla. La barra actual informa la preparación automática inicial y la vigencia. **Actualizar datos offline** reúne la descarga y la renovación explícita. Los datos de cada módulo y las semanas de Café se descargan al abrirlos con conexión.
+
+La sincronización se intenta al abrir en línea con pendientes y al reconectar, mientras AgroSync permanece abierto. **Sincronizar ahora** usa el mismo coordinador. Con sesión válida, Java verifica los permisos por finca antes de cada escritura. Un error, conflicto o sesión vencida conserva la operación local y su identificador. Abrir sin red conserva la autorización hasta su vencimiento, sin renovarla.
+
+En Chromium y SuiteCRM 8.10.2 aislados, el dispositivo mostró **Listo para trabajar sin conexión** tras el login sin pulsar un botón. Se guardó una recolección de 12,5 kg sin red, se abrió una segunda pestaña y se reconectó. Hubo un solo POST y una sola recolección en SuiteCRM. Se guardó otra de 4,25 kg sin red, se cerraron las páginas y se abrió AgroSync en línea. La segunda recolección llegó sola a SuiteCRM mediante un solo POST. La autorización original se conservó en ambos recorridos. Las seis regresiones de Playwright también pasaron, incluido un fallo de envío seguido de un reintento manual.
