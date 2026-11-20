@@ -2,7 +2,7 @@
 
 Este repositorio contiene el ZIP de instalación de los 11 módulos AgroSync, el paquete editable del Constructor de módulos, las extensiones de API usadas por el backend y la configuración Docker de desarrollo. SuiteCRM se descarga por separado.
 
-**El ZIP instala los módulos. Instala las extensiones de API V8 por separado** para habilitar los permisos, las cosechas y la ganadería que usa Java.
+**El ZIP instala los módulos. Instala las extensiones de API V8 por separado** para habilitar los permisos, las cosechas, la ganadería, el inventario y los registros de finca que usa Java.
 
 | Ruta | Uso |
 |---|---|
@@ -51,7 +51,7 @@ En **Administración → Cargador de módulos**, sube `AgroSync-SuiteCRM-8.10.2.
 
 ### 3. Instalar las extensiones V8 por separado
 
-El ZIP no instala los cinco archivos PHP de la API de AgroSync, incluido el que registra las rutas. El siguiente bloque resuelve el directorio de SuiteCRM desde el montaje real del servicio `app`. Requiere permisos de escritura en `public/legacy/custom`.
+El ZIP no instala los PHP de la API de AgroSync, incluido el archivo que registra las rutas. El siguiente bloque resuelve el directorio de SuiteCRM desde el montaje real del servicio `app`. Requiere permisos de escritura en `public/legacy/custom`.
 
 ```bash
 app_id=$(docker compose --env-file .env ps -q app) &&
@@ -63,7 +63,7 @@ app_id=$(docker compose --env-file .env ps -q app) &&
 
 En Linux con Docker local, si Apache es propietario de `public/legacy/custom`, puedes cambiar temporalmente la propiedad de esa carpeta **en la instalación nueva** con `docker compose --env-file .env exec app chown -R "$(id -u):$(id -g)" /var/www/html/public/legacy/custom`. Tras ejecutar el instalador, devuelve la propiedad a Apache con `docker compose --env-file .env exec app chown -R www-data:www-data /var/www/html/public/legacy/custom`.
 
-Para disponer del paquete editable en el Constructor, puedes ejecutar también `./scripts/instalar-personalizaciones.sh "$crm_dir" constructor` en la misma terminal, con los mismos permisos. El instalador admite ejecuciones repetidas y se detiene ante archivos distintos. Si ya existe un archivo compartido de rutas V8, integra las cuatro instrucciones `require` en ese archivo y conserva las rutas previas. [Plantilla de registro de rutas](suitecrm-custom/custom/application/Ext/Api/V8/Config/routes.php)
+Para disponer del paquete editable en el Constructor, puedes ejecutar también `./scripts/instalar-personalizaciones.sh "$crm_dir" constructor` en la misma terminal, con los mismos permisos. El instalador admite ejecuciones repetidas, actualiza el registro de rutas de AgroSync anterior y se detiene ante otras personalizaciones distintas. Si ya existe un archivo compartido de rutas V8, integra las instrucciones `require` de la plantilla en ese archivo y conserva las rutas previas. [Plantilla de registro de rutas](suitecrm-custom/custom/application/Ext/Api/V8/Config/routes.php)
 
 ### 4. Configurar acceso por finca
 
@@ -112,7 +112,9 @@ curl -fsS http://127.0.0.1:8081/actuator/health
 
 Comprueba el login desde React con un usuario activo de SuiteCRM y confirma que aparecen sus fincas autorizadas. Con el perfil Consulta, verifica el rechazo de una operación de registro. La ruta de permisos delegados es `GET /Api/V8/custom/agrosync/access`.
 
-## Resultados de la reinstalación aislada
+Consulta la [validación del incremento RF01–RF12](docs/validacion-rf01-rf12.md) para el alcance de inventario, registros y conflictos.
+
+## Resultados de la reinstalación aislada original
 
 La instalación usó SuiteCRM 8.10.2, PHP 8.3.36 y una base vacía en MariaDB 10.11.18, con red y volumen propios. Se reutilizó una imagen PHP ya construida.
 

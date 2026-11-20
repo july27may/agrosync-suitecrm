@@ -20,11 +20,18 @@ case "$2" in
         registration=custom/application/Ext/Api/V8/Config/routes.php
         chdir_source=custom/Extension/application/Ext/Api/V8
         files=("$chdir_source/agrosync.php" "$chdir_source/cosechas.php"
-               "$chdir_source/cosechas-semanales.php" "$chdir_source/ganaderia.php" "$registration")
+               "$chdir_source/cosechas-semanales.php" "$chdir_source/ganaderia.php" "$chdir_source/inventario.php" "$chdir_source/registros.php" "$registration")
 
+        upgrade_registration=false
         for path in "${files[@]}"; do
             target="$legacy/$path"
             if [[ -e "$target" || -L "$target" ]] && ! cmp -s -- "$source/$path" "$target"; then
+                if [[ "$path" == "$registration" && -f "$target" && ! -L "$target" ]] &&
+                    sed '/^require .*\/inventario\.php.*;$/d; /^require .*\/registros\.php.*;$/d' "$source/$path" |
+                        cmp -s -- - "$target"; then
+                    upgrade_registration=true
+                    continue
+                fi
                 printf 'Ya existe una personalización distinta en %s. Revísala antes de integrar AgroSync.\n' "$target" >&2
                 exit 3
             fi
@@ -32,7 +39,14 @@ case "$2" in
 
         for path in "${files[@]}"; do
             target="$legacy/$path"
-            if [[ ! -e "$target" ]]; then
+            if [[ "$path" == "$registration" && "$upgrade_registration" == true ]]; then
+                temp=$(mktemp -- "$target.agrosync.XXXXXX")
+                trap 'rm -f -- "$temp"' EXIT
+                cp -- "$source/$path" "$temp"
+                chmod --reference="$target" "$temp"
+                mv -f -- "$temp" "$target"
+                trap - EXIT
+            elif [[ ! -e "$target" ]]; then
                 mkdir -p -- "$(dirname -- "$target")"
                 cp -n -- "$source/$path" "$target"
             fi
