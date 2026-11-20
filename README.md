@@ -51,6 +51,14 @@ En **Administración → Cargador de módulos**, sube `AgroSync-SuiteCRM-8.10.2.
 
 ### 3. Instalar las extensiones V8 por separado
 
+Antes de instalar o actualizar estas extensiones, aplica la migración de acuses al servicio `db` del proyecto que estás preparando. La instrucción admite reejecución y no modifica las tablas de los módulos.
+
+```bash
+docker compose --env-file .env exec -T db sh -ceu '
+  exec mariadb -u"$MARIADB_USER" -p"$MARIADB_PASSWORD" "$MARIADB_DATABASE"
+' < scripts/sql/acuses-edicion.sql
+```
+
 El ZIP no instala los PHP de la API de AgroSync, incluido el archivo que registra las rutas. El siguiente bloque resuelve el directorio de SuiteCRM desde el montaje real del servicio `app`. Requiere permisos de escritura en `public/legacy/custom`.
 
 ```bash
@@ -63,7 +71,7 @@ app_id=$(docker compose --env-file .env ps -q app) &&
 
 En Linux con Docker local, si Apache es propietario de `public/legacy/custom`, puedes cambiar temporalmente la propiedad de esa carpeta **en la instalación nueva** con `docker compose --env-file .env exec app chown -R "$(id -u):$(id -g)" /var/www/html/public/legacy/custom`. Tras ejecutar el instalador, devuelve la propiedad a Apache con `docker compose --env-file .env exec app chown -R www-data:www-data /var/www/html/public/legacy/custom`.
 
-Para disponer del paquete editable en el Constructor, puedes ejecutar también `./scripts/instalar-personalizaciones.sh "$crm_dir" constructor` en la misma terminal, con los mismos permisos. El instalador admite ejecuciones repetidas, actualiza el registro de rutas de AgroSync anterior y se detiene ante otras personalizaciones distintas. Si ya existe un archivo compartido de rutas V8, integra las instrucciones `require` de la plantilla en ese archivo y conserva las rutas previas. [Plantilla de registro de rutas](suitecrm-custom/custom/application/Ext/Api/V8/Config/routes.php)
+Para disponer del paquete editable en el Constructor, puedes ejecutar también `./scripts/instalar-personalizaciones.sh "$crm_dir" constructor` en la misma terminal, con los mismos permisos. El instalador admite ejecuciones repetidas, actualiza las versiones anteriores reconocidas de AgroSync y se detiene ante otras personalizaciones distintas. Si ya existe un archivo compartido de rutas V8, integra las instrucciones `require` de la plantilla en ese archivo y conserva las rutas previas. [Plantilla de registro de rutas](suitecrm-custom/custom/application/Ext/Api/V8/Config/routes.php)
 
 ### 4. Configurar acceso por finca
 

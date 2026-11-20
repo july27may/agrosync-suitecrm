@@ -22,14 +22,19 @@ case "$2" in
         files=("$chdir_source/agrosync.php" "$chdir_source/cosechas.php"
                "$chdir_source/cosechas-semanales.php" "$chdir_source/ganaderia.php" "$chdir_source/inventario.php" "$chdir_source/registros.php" "$registration")
 
-        upgrade_registration=false
+        upgrade=()
         for path in "${files[@]}"; do
             target="$legacy/$path"
             if [[ -e "$target" || -L "$target" ]] && ! cmp -s -- "$source/$path" "$target"; then
                 if [[ "$path" == "$registration" && -f "$target" && ! -L "$target" ]] &&
                     sed '/^require .*\/inventario\.php.*;$/d; /^require .*\/registros\.php.*;$/d' "$source/$path" |
                         cmp -s -- - "$target"; then
-                    upgrade_registration=true
+                    upgrade+=("$path")
+                    continue
+                fi
+                if [[ "$path" == "$chdir_source/registros.php" && -f "$target" && ! -L "$target" ]] &&
+                    [[ $(sha256sum "$target" | cut -d' ' -f1) == 1f9cad7f540ff774febd1190ee810798c3158e759753033039367b1e4da0eb7c ]]; then
+                    upgrade+=("$path")
                     continue
                 fi
                 printf 'Ya existe una personalización distinta en %s. Revísala antes de integrar AgroSync.\n' "$target" >&2
@@ -39,7 +44,7 @@ case "$2" in
 
         for path in "${files[@]}"; do
             target="$legacy/$path"
-            if [[ "$path" == "$registration" && "$upgrade_registration" == true ]]; then
+            if [[ " ${upgrade[*]} " == *" $path "* ]]; then
                 temp=$(mktemp -- "$target.agrosync.XXXXXX")
                 trap 'rm -f -- "$temp"' EXIT
                 cp -- "$source/$path" "$temp"

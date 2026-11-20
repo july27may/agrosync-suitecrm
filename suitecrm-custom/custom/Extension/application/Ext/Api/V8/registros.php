@@ -15,6 +15,11 @@ function agrosyncRecordQuery(string $kind): array
         'cosechas' => ['ags_cosechas', 'ags_cosechas r JOIN ags_lotes l ON l.id=r.lote_id AND l.deleted=0',
             'l.finca_id', 'r.lote_id AS loteId,r.recolector_id AS recolectorId,r.fecha,r.estado_cafe AS estadoCafe,
                          r.cantidad_kg AS pesoKg,r.tarifa_kg AS tarifaKg'],
+        'animales' => ['ags_animales', 'ags_animales r', 'r.finca_id',
+            'r.codigo_animal AS codigo,r.sexo,r.categoria,r.fecha_nacimiento AS nacimiento,r.madre_id AS madreId,r.raza,r.estado'],
+        'eventos' => ['ags_eventos_sanitarios', 'ags_eventos_sanitarios r JOIN ags_animales a ON a.id=r.animal_id AND a.deleted=0',
+            'a.finca_id', 'r.animal_id AS animalId,r.fecha,r.tipo_evento AS tipo,r.producto,
+                r.responsable_id AS responsableId,r.referencia_certificado AS certificado,r.description AS observaciones'],
         'insumos' => ['ags_insumos', 'ags_insumos r', 'r.finca_id',
             'r.codigo_insumo AS codigo,r.unidad,r.estado,r.categoria'],
     };
@@ -30,15 +35,25 @@ function agrosyncRecords($db, string $kind, string $farmId, ?string $recordId = 
     return array_map(static fn ($row) => $row + ['version'=>agrosyncRecordVersion($row)], $rows);
 }
 
-$app->get('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas}', function ($request, $response, $args) {
+$app->get('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas|animales|eventos}', function ($request, $response, $args) {
     $user = agrosyncDelegatedUser($request);
     $farm = $request->getQueryParam('fincaId');
     if (!$user || !agrosyncLivestockId($farm) || !agrosyncLivestockRole($user, $farm)) return $response->withStatus(403);
     $db = DBManagerFactory::getInstance();
-    return agrosyncLivestockReply($response, 200, ['registros'=>agrosyncRecords($db, $args['kind'], $farm)]);
+    $kind = $args['kind'];
+    $rows = agrosyncRecords($db, $kind, $farm);
+    if (in_array($kind, ['animales','eventos'], true)) {
+        [$module] = agrosyncRecordQuery($kind);
+        $rows = array_values(array_filter($rows, static function ($row) use ($module) {
+            $bean = BeanFactory::getBean($module, $row['id']);
+            $animal = isset($row['animalId']) ? BeanFactory::getBean('ags_animales', $row['animalId']) : $bean;
+            return !empty($bean->id) && $bean->ACLAccess('view') && !empty($animal->id) && $animal->ACLAccess('view');
+        }));
+    }
+    return agrosyncLivestockReply($response, 200, ['registros'=>$rows]);
 });
 
-$app->post('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas}', function ($request, $response, $args) {
+$app->post('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas|animales|eventos}', function ($request, $response, $args) {
     $user = agrosyncDelegatedUser($request);
     $kind = $args['kind'];
     $input = $request->getParsedBody();
@@ -56,7 +71,7 @@ $app->post('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas}', f
         || !agrosyncLivestockText($name, 255, true)
         || ($id !== null && (!agrosyncLivestockId($id) || !is_string($version) || !preg_match('/^[a-f0-9]{64}$/D', $version)))
         || ($kind === 'fincas' && $id !== $farm)
-        || ($kind === 'cosechas' && $id === null)
+        || (in_array($kind, ['cosechas','animales','eventos'], true) && $id === null)
         || (in_array($kind, ['fincas','lotes','insumos'], true) && !agrosyncLivestockText($code, 30, true))) {
         return agrosyncLivestockReply($response, 400, ['code'=>'REGISTRO_INVALIDO']);
     }
@@ -87,14 +102,45 @@ $app->post('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas}', f
             || bccomp($amount, '0', 3) <= 0 || bccomp($rate, '0', 2) <= 0) {
             return agrosyncLivestockReply($response, 400, ['code'=>'COSECHA_INVALIDA']);
         }
-        $contact = BeanFactory::getBean('Contacts', $collector);
-        if (empty($contact->id) || !$contact->ACLAccess('view')) return $response->withStatus(403);
         $amount = bcadd($amount, '0', 3);
         $rate = bcadd($rate, '0', 2);
         $fields += ['lote_id'=>$lot,'recolector_id'=>$collector,'fecha'=>$date,'estado_cafe'=>$state,
             'cantidad_kg'=>$amount,'tarifa_kg'=>$rate];
         $compare += ['loteId'=>$lot,'recolectorId'=>$collector,'fecha'=>$date,'estadoCafe'=>$state,
             'pesoKg'=>$amount,'tarifaKg'=>$rate];
+    } elseif ($kind === 'animales') {
+        $sex = $input['sexo'] ?? null;
+        $category = $input['categoria'] ?? null;
+        $birth = $input['nacimiento'] ?? null;
+        $mother = $input['madreId'] ?? null;
+        $breed = $input['raza'] ?? null;
+        $state = $input['estado'] ?? null;
+        if (!agrosyncLivestockText($code, 30, true) || !in_array($sex, ['hembra','macho'], true)
+            || !in_array($category, [null,'ternero','ternera','novillo','novilla','vaca','toro'], true)
+            || ($birth !== null && (!agrosyncLivestockDate($birth) || $birth > date('Y-m-d')))
+            || ($mother !== null && !agrosyncLivestockId($mother)) || !agrosyncLivestockText($breed, 100)
+            || !in_array($state, ['activo','vendido','fallecido','inactivo'], true)) {
+            return agrosyncLivestockReply($response, 400, ['code'=>'GANADERIA_INVALIDA']);
+        }
+        $column = 'codigo_animal';
+        $fields += ['codigo_animal'=>trim($code),'sexo'=>$sex,'categoria'=>$category,'fecha_nacimiento'=>$birth,
+            'madre_id'=>$mother,'raza'=>$breed,'estado'=>$state];
+    } elseif ($kind === 'eventos') {
+        $animal = $input['animalId'] ?? null;
+        $date = $input['fecha'] ?? null;
+        $type = $input['tipo'] ?? null;
+        $product = $input['producto'] ?? null;
+        $responsible = $input['responsableId'] ?? null;
+        $certificate = $input['certificado'] ?? null;
+        $notes = $input['observaciones'] ?? null;
+        if (!agrosyncLivestockId($animal) || !agrosyncLivestockDate($date)
+            || !in_array($type, ['vacunacion','tratamiento','revision','otro'], true)
+            || !agrosyncLivestockText($product, 150) || !agrosyncLivestockText($certificate, 100)
+            || !agrosyncLivestockText($notes, 4000) || ($responsible !== null && !agrosyncLivestockId($responsible))) {
+            return agrosyncLivestockReply($response, 400, ['code'=>'GANADERIA_INVALIDA']);
+        }
+        $fields += ['animal_id'=>$animal,'fecha'=>$date,'tipo_evento'=>$type,'producto'=>$product,
+            'responsable_id'=>$responsible,'referencia_certificado'=>$certificate,'description'=>$notes];
     } else {
         $column = ['fincas'=>'codigo_finca', 'lotes'=>'codigo_lote', 'insumos'=>'codigo_insumo'][$kind];
         $fields[$column] = trim($code);
@@ -116,21 +162,60 @@ $app->post('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas}', f
 
     $db = DBManagerFactory::getInstance();
     $lockScope = $kind === 'fincas' ? 'fincas' : $farm;
-    $lock = $db->quoted('agrosync-reg-' . substr(hash('sha256', $lockScope), 0, 45));
+    $lock = $db->quoted(in_array($kind, ['animales','eventos'], true)
+        ? 'agrosync-ganado-' . $farm : 'agrosync-reg-' . substr(hash('sha256', $lockScope), 0, 45));
     $acquired = agrosyncInventoryRows($db, "SELECT GET_LOCK($lock, 5) AS acquired");
     if ((string) ($acquired[0]['acquired'] ?? '') !== '1') return $response->withStatus(503);
     try {
         [$module, $from, $farmColumn] = agrosyncRecordQuery($kind);
         $key = $id ?? $op;
+        $operationKey = $db->quoted($op);
+        $fingerprint = agrosyncRecordVersion([$user->id, $farm, $kind, $key, $version, $fields]);
         $original = agrosyncRecords($db, $kind, $farm, $key)[0] ?? null;
         if ($id !== null && !$original) return $response->withStatus(403);
+        if (in_array($kind, ['animales','eventos'], true)) {
+            $target = BeanFactory::getBean($module, $id);
+            if (!$target || !$target->ACLAccess('edit')) return $response->withStatus(403);
+        }
+        if ($id !== null) {
+            $previous = $db->fetchByAssoc($db->query("SELECT actor_id,finca_id,fingerprint,receipt
+                FROM agrosync_acuses_edicion WHERE operation_id=$operationKey", true), false);
+            if ($previous) {
+                if ($previous['actor_id'] !== $user->id || $previous['finca_id'] !== $farm || $previous['fingerprint'] !== $fingerprint) {
+                    return agrosyncLivestockReply($response, 409, ['code'=>'OPERACION_REUTILIZADA']);
+                }
+                return agrosyncLivestockReply($response, 200, json_decode($previous['receipt'], true, 512, JSON_THROW_ON_ERROR));
+            }
+        }
+        if (isset($collector)) {
+            $contact = BeanFactory::getBean('Contacts', $collector);
+            if (empty($contact->id) || !$contact->ACLAccess('view')) return $response->withStatus(403);
+        }
         if (isset($lot) && !agrosyncRecords($db, 'lotes', $farm, $lot)) return $response->withStatus(403);
+        if (in_array($kind, ['animales','eventos'], true)) {
+            $reference = $kind === 'animales' ? $mother : $animal;
+            $visited = $kind === 'animales' ? [$id=>true] : [];
+            while ($reference !== null && $reference !== '') {
+                if (isset($visited[$reference])) return agrosyncLivestockReply($response, 409, ['code'=>'REFERENCIA_CICLICA']);
+                $relative = BeanFactory::getBean('ags_animales', $reference);
+                if (empty($relative->id) || $relative->finca_id !== $farm || !$relative->ACLAccess('view')
+                    || ($kind === 'animales' && count($visited) === 1 && $relative->sexo !== 'hembra')) {
+                    return $response->withStatus(403);
+                }
+                $visited[$reference] = true;
+                $reference = $kind === 'animales' ? $relative->madre_id : null;
+            }
+            if (isset($responsible)) {
+                $contact = BeanFactory::getBean('Contacts', $responsible);
+                if (empty($contact->id) || !$contact->ACLAccess('view')) return $response->withStatus(403);
+            }
+        }
         if ($kind === 'insumos' && $original && $original['unidad'] !== $unit) {
             return agrosyncLivestockReply($response, 409, ['code'=>'UNIDAD_INMUTABLE']);
         }
         if ($original) {
             $same = !array_diff_assoc($compare, array_intersect_key($original, $compare));
-            if ($same && ($id !== null || BeanFactory::getBean($module, $key)->created_by === $user->id)) {
+            if ($same && $id === null && BeanFactory::getBean($module, $key)->created_by === $user->id) {
                 return agrosyncLivestockReply($response, 200, ['operationId'=>$op, 'registro'=>$original]);
             }
             if ($id === null || $original['version'] !== $version) {
@@ -168,12 +253,23 @@ $app->post('/agrosync/registros/{kind:fincas|lotes|labores|insumos|cosechas}', f
             agrosyncSetRecordGroups($bean, $groups);
             $saved = agrosyncRecords($db, $kind, $farm, $key)[0] ?? null;
             if (!$saved) throw new RuntimeException('El registro quedó fuera del alcance de la finca.');
+            $receipt = ['operationId'=>$op, 'registro'=>$saved];
+            if ($id !== null) {
+                $actorSql = $db->quoted($user->id);
+                $farmSql = $db->quoted($farm);
+                $hashSql = $db->quoted($fingerprint);
+                $receiptSql = $db->quoted(json_encode($receipt, JSON_THROW_ON_ERROR));
+                if (!$db->query("INSERT INTO agrosync_acuses_edicion (operation_id,actor_id,finca_id,fingerprint,receipt)
+                    VALUES ($operationKey,$actorSql,$farmSql,$hashSql,$receiptSql)", false)) {
+                    throw new RuntimeException('No se guardó el acuse.');
+                }
+            }
             $db->query('COMMIT', true);
         } catch (Throwable $failure) {
             $db->query('ROLLBACK');
             return $response->withStatus(503);
         }
-        return agrosyncLivestockReply($response, $id === null ? 201 : 200, ['operationId'=>$op, 'registro'=>$saved]);
+        return agrosyncLivestockReply($response, $id === null ? 201 : 200, $receipt);
     } finally {
         $db->query("SELECT RELEASE_LOCK($lock)");
     }

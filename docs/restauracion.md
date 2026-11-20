@@ -32,3 +32,10 @@ gzip -t suitecrm810-AAAAmmdd-HHMMSS.sql.gz
 
    Configura en `.env.restauracion` el directorio separado de SuiteCRM, el puerto local alternativo y las contraseñas locales. El valor de `-p` fija explícitamente el proyecto de destino. Comprueba el nombre indicado por `ps` antes de importar.
 4. Vuelve a iniciar la aplicación con `docker compose --env-file .env.restauracion -p "$proyecto" up -d app`. Valida los conteos de fincas, cosechas, animales y eventos en el destino. Comprueba los usuarios, grupos y roles recuperados. Verifica las rutas de la API y prepara clientes OAuth con credenciales nuevas para el entorno restaurado. Las sesiones anteriores no deben darse por válidas.
+
+
+## Copia de archivos y configuración
+
+Las copias de cierre incluyen `base.sql.gz`, `suitecrm.tar.gz`, `configuracion-local.tar.gz` y `SHA256SUMS`. Conserva todo el directorio fuera de Git con permisos privados. Comprueba la integridad con `sha256sum -c SHA256SUMS` desde ese directorio.
+
+Para recuperar la instalación completa, extrae `suitecrm.tar.gz` en un directorio **nuevo** de SuiteCRM e importa `base.sql.gz` con el proyecto de restauración indicado arriba. El archivo de configuración conserva los valores privados de la instalación original. Revisa los destinos, las URL, el nombre de proyecto, el directorio de montaje y las credenciales antes de usar una copia. Si ya recuperaste la aplicación desde el archivo, sus módulos y extensiones restaurados forman parte de esa copia. Conserva también su par OAuth. Para aplicar una versión posterior, sigue el README y ejecuta las migraciones correspondientes.

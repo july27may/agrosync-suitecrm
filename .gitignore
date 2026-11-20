@@ -10,3 +10,5 @@
 *.key
 *.log
 /[Ss]uite[Cc][Rr][Mm]*.zip
+
+!/scripts/sql/acuses-edicion.sql
